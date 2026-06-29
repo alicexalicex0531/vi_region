@@ -1,0 +1,10 @@
+# Netlify 部署設定（《背包又滿了》純前端，localStorage 存檔）
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# 單頁應用：任何路徑都回 index.html（雖然目前無前端路由，加著保險）
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
