@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { ClassId } from '../types'
 import { CLASSES } from '../data/classes'
 import { useGameStore } from '../store/gameStore'
+import SaveManager from './SaveManager'
 
 export default function ClassSelect() {
   const createCharacter = useGameStore((s) => s.createCharacter)
@@ -9,6 +10,7 @@ export default function ClassSelect() {
   const hasRoster = useGameStore((s) => s.roster.length > 0)
   const [classId, setClassId] = useState<ClassId | null>(null)
   const [name, setName] = useState('')
+  const [saveOpen, setSaveOpen] = useState(false)
 
   const canStart = classId !== null && name.trim().length > 0
 
@@ -73,9 +75,18 @@ export default function ClassSelect() {
         出發進地下城！⛏️
       </button>
 
+      <button
+        onClick={() => setSaveOpen(true)}
+        className="text-xs font-bold text-[#6F9E56] underline underline-offset-2 active:scale-95"
+      >
+        💾 已有備份存檔？點這裡匯入紀錄
+      </button>
+
       <p className="text-center text-[11px] leading-relaxed text-[#C9B89D]">
         ⚠️ 資料儲存在本機，清除瀏覽記錄會遺失角色
       </p>
+
+      {saveOpen && <SaveManager onClose={() => setSaveOpen(false)} />}
     </div>
   )
 }

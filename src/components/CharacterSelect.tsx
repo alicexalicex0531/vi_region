@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { CLASSES } from '../data/classes'
 import { MAX_CHARACTERS, useGameStore } from '../store/gameStore'
 import Modal from './Modal'
+import SaveManager from './SaveManager'
 
 // 開頭選角畫面（GDD §3.2）：名字、職業、等級、💀死亡數；可建新角、可刪角（二次確認）
 export default function CharacterSelect() {
@@ -10,6 +11,7 @@ export default function CharacterSelect() {
   const deleteSlot = useGameStore((s) => s.deleteSlot)
   const startCreate = useGameStore((s) => s.startCreate)
   const [confirmIdx, setConfirmIdx] = useState<number | null>(null)
+  const [saveOpen, setSaveOpen] = useState(false)
 
   const confirming = confirmIdx !== null ? roster[confirmIdx] : null
 
@@ -70,10 +72,17 @@ export default function CharacterSelect() {
         {roster.length >= MAX_CHARACTERS ? '宿舍滿了！要先送走一位～' : '＋ 建立新冒險者'}
       </button>
 
+      <button
+        onClick={() => setSaveOpen(true)}
+        className="w-full rounded-2xl bg-white p-3 text-sm font-black text-[#6F9E56] shadow-sm active:scale-95"
+      >
+        💾 存檔備份（匯出 / 匯入）
+      </button>
+
       <p className="text-center text-[11px] leading-relaxed text-[#C9B89D]">
         🏬 倉庫與配方手冊全角色共用
         <br />
-        ⚠️ 資料儲存在本機，清除瀏覽記錄會遺失角色
+        ⚠️ 資料儲存在本機，清除瀏覽記錄會遺失角色（記得存檔備份！）
       </p>
 
       {/* 刪除二次確認（GDD §3.2：避免誤刪農三天的神角） */}
@@ -107,6 +116,8 @@ export default function CharacterSelect() {
           </div>
         </Modal>
       )}
+
+      {saveOpen && <SaveManager onClose={() => setSaveOpen(false)} />}
     </div>
   )
 }

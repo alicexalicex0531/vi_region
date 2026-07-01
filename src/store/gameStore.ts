@@ -26,6 +26,7 @@ import {
 } from '../game/craft'
 
 export const GRANDMA_TITLE = '背包開始發臭' // GDD §7.8.7 全收集稱號
+export const SAVE_KEY = 'backpack-dungeon-save' // localStorage 存檔 key（匯出/匯入共用）
 
 export type MonsterPos = { col: number; row: number }
 const EMPTY_ARMED: ArmedPotions = { attack: false, defense: false, heal: false }
@@ -757,7 +758,7 @@ export const useGameStore = create<GameState>()(
       },
     }),
     {
-      name: 'backpack-dungeon-save',
+      name: SAVE_KEY,
       version: 6,
       migrate: (persisted: unknown, version: number) => {
         let s = persisted as Record<string, unknown>

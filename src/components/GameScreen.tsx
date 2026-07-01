@@ -11,6 +11,7 @@ import BattleModal from './BattleModal'
 import CraftView from './CraftView'
 import IsometricDungeonMap from './IsometricDungeonMap'
 import { GRANDMA_QUOTES } from './PhantomGrandma'
+import SaveManager from './SaveManager'
 import { buildLevel, monsterIdAt, PLACEMENT_ORDER } from './dungeonLevels'
 import Modal from './Modal'
 import ShopView from './ShopView'
@@ -40,6 +41,7 @@ export default function GameScreen() {
 
   const [view, setView] = useState<View>('dungeon')
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [saveOpen, setSaveOpen] = useState(false)
 
   // 提示自動消失
   useEffect(() => {
@@ -157,14 +159,23 @@ export default function GameScreen() {
           <h3 className="text-center text-base font-black text-[#5C4A36]">⚙️ 設定</h3>
           <div className="mt-3 rounded-xl bg-[#FFF4DC] p-3 text-xs leading-relaxed text-[#7A6850]">
             ⚠️ 存檔說明：角色資料儲存在<b>瀏覽器本機</b>，清除瀏覽記錄會讓角色蒸發。
-            匯出存檔功能正在路上（Phase 3）。
+            記得用下方的存檔備份，匯出到雲端保平安！
           </div>
+          <button
+            onClick={() => {
+              setSettingsOpen(false)
+              setSaveOpen(true)
+            }}
+            className="mt-3 w-full rounded-xl bg-[#6FBF73] p-3 text-sm font-black text-white active:scale-95"
+          >
+            💾 存檔備份（匯出 / 匯入）
+          </button>
           <button
             onClick={() => {
               setSettingsOpen(false)
               exitToSelect()
             }}
-            className="mt-3 w-full rounded-xl bg-[#EAF4FD] p-3 text-sm font-bold text-[#33658A] active:scale-95"
+            className="mt-2 w-full rounded-xl bg-[#EAF4FD] p-3 text-sm font-bold text-[#33658A] active:scale-95"
           >
             回選角畫面，換隻角色玩 🏘️
           </button>
@@ -182,6 +193,9 @@ export default function GameScreen() {
           </p>
         </Modal>
       )}
+
+      {/* ── 存檔備份（匯出/匯入，GDD §13.3）── */}
+      {saveOpen && <SaveManager onClose={() => setSaveOpen(false)} />}
     </div>
   )
 }
